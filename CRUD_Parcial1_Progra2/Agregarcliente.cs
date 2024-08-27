@@ -90,7 +90,7 @@ namespace CRUD_Parcial1_Progra2
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Ocurrio un error {ex}");
+                    MessageBox.Show("Ocurrio un error");
                 }
             }
         }
