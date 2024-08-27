@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CRUD_Parcial1_Progra2
 {
-    public partial class Form1 : Form
+    public partial class Principal : Form
     {
-        public Form1()
+        public Principal()
         {
             InitializeComponent();
         }
