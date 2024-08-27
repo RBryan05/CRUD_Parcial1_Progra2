@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CapaDatos;
+using CapaModelos;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,12 @@ namespace CRUD_Parcial1_Progra2
 {
     public partial class Principal : Form
     {
+        ClientesDAL _clientesDAL;
         public Principal()
-        {
+        {           
+            _clientesDAL = new ClientesDAL();
             InitializeComponent();
+            dgvClientes.DataSource = _clientesDAL.ObtenerClientes();
         }
     }
 }

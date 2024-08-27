@@ -42,8 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientesDAL.cs" />
     <Compile Include="ContextoBD.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CapaModelos\CapaModelos.csproj">
+      <Project>{FA1D4F9F-FCC8-4C7F-A638-56D6EFADB836}</Project>
+      <Name>CapaModelos</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

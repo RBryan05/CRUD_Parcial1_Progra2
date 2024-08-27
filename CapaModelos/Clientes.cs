@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CapaModelos
 {
-    public class Personas
+    public class Clientes
     {
         public int Identificacion { get; set; }
         public string Nombres { get; set; }
