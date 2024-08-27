@@ -163,5 +163,29 @@ namespace CapaDatos
                 }
             }
         }
+
+        public int EliminarCliente(int identificacion)
+        {
+            using (var conexion = ContextoBD.ObtenerCadena())
+            {
+                string consulta = @"
+                DELETE FROM [dbo].[Clientes]
+                WHERE [Identificacion] = @Identificacion";
+                using (SqlCommand comando = new SqlCommand(consulta, conexion))
+                {
+                    // Configurar el parámetro del comando
+                    comando.Parameters.AddWithValue("@Identificacion", identificacion);
+
+                    // Ejecutar el comando y obtener el número de filas afectadas
+                    int filasAfectadas = comando.ExecuteNonQuery();
+                    if (filasAfectadas == 0)
+                    {
+                        throw new Exception("No se eliminó ningún registro. Verifica que el cliente exista.");
+                    }
+
+                    return filasAfectadas;
+                }
+            }
+        }
     }
 }

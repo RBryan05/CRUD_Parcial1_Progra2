@@ -62,6 +62,32 @@ namespace CRUD_Parcial1_Progra2
                         agregarcliente.ShowDialog();
                         Datos();
                     }
+                    else if (dgvClientes.Columns[e.ColumnIndex].Name.Equals("Eliminar"))
+                    {
+                        var desicion = MessageBox.Show("¿Está seguro que desea eliminar el registro?", "Eliminar Persona",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                        _clientesDAL = new ClientesDAL();
+
+                        int resultado = 0;
+
+                        if (desicion != DialogResult.Yes)
+                        {
+                            MessageBox.Show("El registro se continua mostrando en el listado.");
+                        }
+                        else
+                        {
+                            resultado = _clientesDAL.EliminarCliente(id);
+                            if (resultado > 0)
+                            {
+                                MessageBox.Show("El registro eliminado con exito.");
+                                Datos();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No se logró eliminar el registro.");
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
