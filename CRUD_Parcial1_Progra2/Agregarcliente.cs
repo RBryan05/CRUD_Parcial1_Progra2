@@ -84,7 +84,7 @@ namespace CRUD_Parcial1_Progra2
 
                     if (filasAfectadas > 0)
                     {
-                        MessageBox.Show($"Se agrego el usuario con exito.");
+                        MessageBox.Show("Se agrego el usuario con exito.");
                         this.Close();
                     }
                 }
