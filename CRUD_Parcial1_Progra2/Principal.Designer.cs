@@ -46,6 +46,8 @@
             // 
             // dgvClientes
             // 
+            this.dgvClientes.AllowUserToAddRows = false;
+            this.dgvClientes.AllowUserToDeleteRows = false;
             this.dgvClientes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvClientes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvClientes.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -53,6 +55,7 @@
             this.Eliminar});
             this.dgvClientes.Location = new System.Drawing.Point(12, 184);
             this.dgvClientes.Name = "dgvClientes";
+            this.dgvClientes.ReadOnly = true;
             this.dgvClientes.RowHeadersWidth = 62;
             this.dgvClientes.RowTemplate.Height = 28;
             this.dgvClientes.Size = new System.Drawing.Size(1290, 457);
@@ -65,6 +68,7 @@
             this.Editar.Image = global::CRUD_Parcial1_Progra2.Properties.Resources.edit;
             this.Editar.MinimumWidth = 8;
             this.Editar.Name = "Editar";
+            this.Editar.ReadOnly = true;
             // 
             // Eliminar
             // 
@@ -72,6 +76,7 @@
             this.Eliminar.Image = global::CRUD_Parcial1_Progra2.Properties.Resources.delete;
             this.Eliminar.MinimumWidth = 8;
             this.Eliminar.Name = "Eliminar";
+            this.Eliminar.ReadOnly = true;
             // 
             // label1
             // 

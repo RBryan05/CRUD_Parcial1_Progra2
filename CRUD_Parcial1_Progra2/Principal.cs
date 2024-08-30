@@ -44,9 +44,9 @@ namespace CRUD_Parcial1_Progra2
                 int id = int.Parse(txtId.Text);
                 dgvClientes.DataSource = _clientesDAL.ObtenerClientesID2(id);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show($"Ocurrio un error. {ex}");
+                MessageBox.Show("Ingrese un numero entero por favor.");
             }
         }
 
@@ -133,10 +133,10 @@ namespace CRUD_Parcial1_Progra2
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Mostrar mensaje de error
-                MessageBox.Show($"Ocurrió un error: {ex.Message}");
+                MessageBox.Show("Ocurrió un error.");
             }
         }
 
