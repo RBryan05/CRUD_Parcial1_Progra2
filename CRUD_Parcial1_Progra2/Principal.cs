@@ -24,7 +24,16 @@ namespace CRUD_Parcial1_Progra2
         private void Datos()
         {
             _clientesDAL = new ClientesDAL();
-            dgvClientes.DataSource = _clientesDAL.ObtenerClientes();
+            if (!chkActivos.Checked)
+            {
+                dgvClientes.DataSource = _clientesDAL.ObtenerClientes();
+                dgvClientes.Columns["Activo"].Visible = false;
+            }
+            else
+            {
+                dgvClientes.Columns["Activo"].Visible = false;
+                dgvClientes.DataSource = _clientesDAL.FiltrarPorEstado();
+            }
         }
 
         private void btnBuscar_Click(object sender, EventArgs e)
@@ -33,7 +42,7 @@ namespace CRUD_Parcial1_Progra2
             {
                 _clientesDAL = new ClientesDAL();
                 int id = int.Parse(txtId.Text);
-                dgvClientes.DataSource = _clientesDAL.ObtenerClientesID(id);
+                dgvClientes.DataSource = _clientesDAL.ObtenerClientesID2(id);
             }
             catch (Exception ex)
             {
@@ -52,39 +61,73 @@ namespace CRUD_Parcial1_Progra2
         {
             try
             {
+                // Verificar que el clic fue en una celda válida
                 if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
                 {
+                    // Obtener el ID del cliente desde la celda "Identificacion"
                     int id = int.Parse(dgvClientes.Rows[e.RowIndex].Cells["Identificacion"].Value.ToString());
 
+                    // Verificar el nombre de la columna clicada
                     if (dgvClientes.Columns[e.ColumnIndex].Name.Equals("Editar"))
                     {
+                        // Abrir el formulario para editar el cliente
                         Agregarcliente agregarcliente = new Agregarcliente(id);
                         agregarcliente.ShowDialog();
-                        Datos();
+                        Datos(); // Actualizar los datos
                     }
                     else if (dgvClientes.Columns[e.ColumnIndex].Name.Equals("Eliminar"))
                     {
-                        var desicion = MessageBox.Show("¿Está seguro que desea eliminar el registro?", "Eliminar Persona",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                        _clientesDAL = new ClientesDAL();
-
-                        int resultado = 0;
-
-                        if (desicion != DialogResult.Yes)
+                        // Verificar si el CheckBox está marcado para decidir la acción
+                        if (chkActivos.Checked)
                         {
-                            MessageBox.Show("El registro se continua mostrando en el listado.");
-                        }
-                        else
-                        {
-                            resultado = _clientesDAL.EliminarCliente(id);
-                            if (resultado > 0)
+                            // Confirmar la eliminación permanente
+                            var desicion = MessageBox.Show("¿Está seguro que desea eliminar el registro permanentemente?", "Eliminar Persona",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                            _clientesDAL = new ClientesDAL();
+
+                            if (desicion == DialogResult.Yes)
                             {
-                                MessageBox.Show("El registro eliminado con exito.");
-                                Datos();
+                                int resultado = _clientesDAL.EliminarClientePermanete(id);
+                                if (resultado > 0)
+                                {
+                                    MessageBox.Show("El registro eliminado con éxito.");
+                                    Datos(); // Actualizar los datos
+                                }
+                                else
+                                {
+                                    MessageBox.Show("No se logró eliminar el registro.");
+                                }
                             }
                             else
                             {
-                                MessageBox.Show("No se logró eliminar el registro.");
+                                MessageBox.Show("El registro se continúa mostrando en el listado.");
+                            }
+                        }
+                        else
+                        {
+                            // Confirmar la eliminación normal
+                            var desicion = MessageBox.Show("¿Está seguro que desea eliminar el registro?", "Eliminar Persona",
+                            MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+
+                            _clientesDAL = new ClientesDAL();
+
+                            if (desicion == DialogResult.Yes)
+                            {
+                                int resultado = _clientesDAL.EliminarCliente(id);
+                                if (resultado > 0)
+                                {
+                                    MessageBox.Show("El registro eliminado con éxito.");
+                                    Datos(); // Actualizar los datos
+                                }
+                                else
+                                {
+                                    MessageBox.Show("No se logró eliminar el registro.");
+                                }
+                            }
+                            else
+                            {
+                                MessageBox.Show("El registro se continúa mostrando en el listado.");
                             }
                         }
                     }
@@ -92,8 +135,29 @@ namespace CRUD_Parcial1_Progra2
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ocurrio un error {ex}");
+                // Mostrar mensaje de error
+                MessageBox.Show($"Ocurrió un error: {ex.Message}");
             }
+        }
+
+
+        private void txtId_TextChanged(object sender, EventArgs e)
+        {
+            if (txtId.Text == "")
+            {
+                Datos();
+            }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            _clientesDAL = new ClientesDAL();
+            dgvClientes.DataSource = _clientesDAL.ObtenerPorNombre(txtNombre.Text);
+        }
+
+        private void chkActivos_CheckedChanged(object sender, EventArgs e)
+        {
+            Datos();
         }
     }
 }

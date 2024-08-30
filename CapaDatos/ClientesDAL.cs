@@ -1,5 +1,6 @@
 ﻿using CapaModelos;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace CapaDatos
                 consulta = consulta + "      ,[Correo] " + "\n";
                 consulta = consulta + "      ,[EstadoCivil] " + "\n";
                 consulta = consulta + "      ,[Activo] " + "\n";
-                consulta = consulta + "  FROM [dbo].[Clientes]";
+                consulta = consulta + "  FROM [dbo].[Clientes]" + "\n";
+                consulta = consulta + "  WHERE[Activo] = 1";
 
                 using (SqlCommand comando = new SqlCommand(consulta, cadena))
                 {
@@ -55,6 +57,39 @@ namespace CapaDatos
             clientes.Activo = reader["Activo"] == DBNull.Value ? true : (bool)reader["Activo"];
 
             return clientes;
+        }
+
+        public List<Clientes> ObtenerClientesID2(int id)
+        {
+            using (var cadena = ContextoBD.ObtenerCadena())
+            {
+                String consulta = "";
+                consulta = consulta + "SELECT [Identificacion] " + "\n";
+                consulta = consulta + "      ,[Nombres] " + "\n";
+                consulta = consulta + "      ,[Apellidos] " + "\n";
+                consulta = consulta + "      ,[Telefono] " + "\n";
+                consulta = consulta + "      ,[Direccion] " + "\n";
+                consulta = consulta + "      ,[Correo] " + "\n";
+                consulta = consulta + "      ,[EstadoCivil] " + "\n";
+                consulta = consulta + "      ,[Activo] " + "\n";
+                consulta = consulta + "  FROM [dbo].[Clientes]" + "\n";
+                consulta = consulta + " WHERE [Identificacion] = @identificacion";
+
+                using (SqlCommand comando = new SqlCommand(consulta, cadena))
+                {
+                    comando.Parameters.AddWithValue("@identificacion", id);
+                    SqlDataReader reader = comando.ExecuteReader();
+                    List<Clientes> Personas = new List<Clientes>();
+
+                    while (reader.Read())
+                    {
+                        var personas = LeerDelDataReader(reader);
+                        Personas.Add(personas);
+                    }
+
+                    return Personas;
+                }
+            }
         }
 
         public Clientes ObtenerClientesID(int id)
@@ -169,6 +204,71 @@ namespace CapaDatos
             using (var conexion = ContextoBD.ObtenerCadena())
             {
                 string consulta = @"
+                UPDATE [dbo].[Clientes]
+                SET [Activo] = 0
+                WHERE [Identificacion] = @Identificacion";
+
+                using (SqlCommand comando = new SqlCommand(consulta, conexion))
+                {
+                    // Configurar los parámetros del comando
+                    comando.Parameters.AddWithValue("@Identificacion", identificacion);
+
+                    // Ejecutar el comando
+                    int filasAfectadas = comando.ExecuteNonQuery();
+                    return filasAfectadas;
+                }
+            }
+        }
+
+        // Metodo para obtener clientes por nombres.
+        public List<Clientes> ObtenerPorNombre(string nombre)
+        {
+            // Obtenemos todos los registros de clientes y los agregamos a una variables
+            var datos = ObtenerClientes();
+            // Aplicamos un filtro sobre los la variable con los datos y seleccionamos solo el que concida con el nombre brindado.
+            var filtro = datos.FindAll(x => x.Nombres.ToUpper().StartsWith(nombre.ToUpper()));
+            // Retornamos lista que contenga solo el registro que coincida con el nombre.
+            return filtro;
+        }
+
+        public List<Clientes> FiltrarPorEstado()
+        {
+            using (var cadena = ContextoBD.ObtenerCadena())
+            {
+                String consulta = "";
+                consulta = consulta + "SELECT [Identificacion] " + "\n";
+                consulta = consulta + "      ,[Nombres] " + "\n";
+                consulta = consulta + "      ,[Apellidos] " + "\n";
+                consulta = consulta + "      ,[Telefono] " + "\n";
+                consulta = consulta + "      ,[Direccion] " + "\n";
+                consulta = consulta + "      ,[Correo] " + "\n";
+                consulta = consulta + "      ,[EstadoCivil] " + "\n";
+                consulta = consulta + "      ,[Activo] " + "\n";
+                consulta = consulta + "  FROM [dbo].[Clientes]" + "\n";
+                consulta = consulta + "  WHERE[Activo] = 0";
+
+                using (SqlCommand comando = new SqlCommand(consulta, cadena))
+                {
+                    SqlDataReader reader = comando.ExecuteReader();
+                    List<Clientes> Personas = new List<Clientes>();
+
+                    while (reader.Read())
+                    {
+                        var clientes = LeerDelDataReader(reader);
+                        Personas.Add(clientes);
+                    }
+
+                    return Personas;
+                }
+            }
+
+        }
+
+        public int EliminarClientePermanete(int identificacion)
+        {
+            using (var conexion = ContextoBD.ObtenerCadena())
+            {
+                string consulta = @"
                 DELETE FROM [dbo].[Clientes]
                 WHERE [Identificacion] = @Identificacion";
                 using (SqlCommand comando = new SqlCommand(consulta, conexion))
@@ -186,6 +286,7 @@ namespace CapaDatos
                     return filasAfectadas;
                 }
             }
+
         }
     }
 }
