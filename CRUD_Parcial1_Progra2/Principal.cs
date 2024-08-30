@@ -46,7 +46,7 @@ namespace CRUD_Parcial1_Progra2
             }
             catch (Exception)
             {
-                MessageBox.Show("Ingrese un numero entero por favor.");
+                MessageBox.Show("Ingrese un número entero por favor.");
             }
         }
 
@@ -88,10 +88,10 @@ namespace CRUD_Parcial1_Progra2
 
                             if (desicion == DialogResult.Yes)
                             {
-                                int resultado = _clientesDAL.EliminarClientePermanete(id);
+                                int resultado = _clientesDAL.EliminarClientePermanente(id);
                                 if (resultado > 0)
                                 {
-                                    MessageBox.Show("El registro eliminado con éxito.");
+                                    MessageBox.Show("Registro eliminado con éxito.");
                                     Datos(); // Actualizar los datos
                                 }
                                 else

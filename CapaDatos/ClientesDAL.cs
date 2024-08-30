@@ -327,7 +327,7 @@ namespace CapaDatos
 
 
         // Método para eliminar un cliente de manera permanente de la base de datos, basándose en su identificación.
-        public int EliminarClientePermanete(int identificacion)
+        public int EliminarClientePermanente(int identificacion)
         {
             // Abrir una conexión a la base de datos utilizando el contexto de conexión.
             using (var conexion = ContextoBD.ObtenerCadena())
